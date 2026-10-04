@@ -159,14 +159,26 @@ var POPUPS = {
       + '</div>';
   }},
   tellus:{k:'Tell us a little more',t:'Tell us a little more about you',h:function(){
-    var interestItems = ['Arts & Culture','Public Education','Neighborhood Revitalization','Youth Development','Economic Mobility','Health & Human Services','Basic Needs & Critical Support','Workforce Development','Science & Technology','Research & Innovation','Environmental Protection','Civic Engagement'];
+    /* Interest areas grouped by the three Impact Agenda pillars (stacks on phones, three columns when there's room) */
+    var interestGroups = [
+      { area:'People to Prosperity',  color:'var(--p-pros)',   items:['Arts & Culture','Public Education','Youth Development','Economic Mobility','Health & Human Services','Basic Needs & Critical Support'] },
+      { area:'Vibrant Neighborhoods', color:'var(--p-neigh)',  items:['Neighborhood Revitalization','Environmental Protection','Transportation Access','Civic Engagement'] },
+      { area:'Grow Our Region',       color:'var(--p-region)', items:['Workforce Development','Science & Technology','Research & Innovation','Attracting Investment'] }
+    ];
     var segLabel = REG_SEGMENT === 'advisor' ? 'Advisor' : (REG_SEGMENT === 'community' ? 'Community Member' : '');
     var subLabel = SUBTYPE_LABELS[REG_SUBTYPE] || '';
     var context = segLabel ? '<span class="ipin ipin-setup" style="margin-bottom:16px;">' + segLabel + (subLabel ? ' \u00b7 ' + subLabel : '') + '</span><br/>' : '';
     return '<div class="pop-pad">' + context + '<p class="lede">One quick step and we\u2019ll start tailoring things to you \u2014 relevant updates, the right funds, the right people.</p>'
       + '<div class="j-two" style="margin-top:16px;">' + regField('tuName','Your name','Jamie Sullivan') + regField('tuEmail','Email','jamie@cleveland.com','email') + '</div>'
       + '<div style="margin-top:20px;"><label style="display:block;font-family:var(--f-ledger);font-size:10px;font-weight:600;color:var(--forest);margin-bottom:9px;text-transform:uppercase;letter-spacing:.12em;">Interest areas \u00b7 pick as many as you like</label>'
-      + '<div class="chip-row" id="tuInterests">' + interestItems.map(function(x){ return '<button class="chip" onclick="this.classList.toggle(\'sel\')">' + x + '</button>'; }).join('') + '</div></div>'
+      + '<div id="tuInterests" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">'
+      + interestGroups.map(function(g){
+          return '<div role="group" aria-label="' + g.area + '" style="background:var(--paper);border:1px solid var(--line);border-top:3px solid ' + g.color + ';border-radius:14px;padding:12px 12px 14px;">'
+            + '<div style="display:flex;align-items:center;gap:8px;font-family:var(--f-display);font-weight:700;font-size:15px;color:var(--forest);letter-spacing:-.01em;margin-bottom:10px;">'
+            + '<span style="width:8px;height:8px;border-radius:2px;background:' + g.color + ';flex-shrink:0;"></span>' + g.area + '</div>'
+            + '<div class="chip-row">' + g.items.map(function(x){ return '<button class="chip" data-area="' + g.area + '" aria-pressed="false" onclick="this.classList.toggle(\'sel\');this.setAttribute(\'aria-pressed\',this.classList.contains(\'sel\'))">' + x + '</button>'; }).join('') + '</div></div>';
+        }).join('')
+      + '</div></div>'
       + '<button class="btn btn-accent btn-block btn-lg" style="margin-top:20px;" onclick="submitTellUs()">Continue</button></div>';
   }},
   granteeholding:{k:'Grantee Partners',t:'Grantee Portal',h:function(){
@@ -443,6 +455,7 @@ function initParallax(){
   if (REDUCE || !window.matchMedia('(hover:hover) and (min-width:960px)').matches) return;
   var hero = document.querySelector('.hero');
   var g = hero.querySelector('.guilloche');
+  if (!g) return;   /* this hero has no pattern to move */
   var raf = null, tx = 0, ty = 0;
   hero.addEventListener('mousemove', function(e){
     var r = hero.getBoundingClientRect();
