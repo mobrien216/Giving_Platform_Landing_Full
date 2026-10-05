@@ -161,22 +161,22 @@ var POPUPS = {
   tellus:{k:'Tell us a little more',t:'Tell us a little more about you',h:function(){
     /* Interest areas — color-coded by Impact Agenda pillar. The tags lead; pillar names sit in a small key below. */
     var interestGroups = [
-      { area:'People to Prosperity',  key:'pros',   items:['Arts & Culture','Public Education','Youth Development','Economic Mobility','Health & Human Services','Basic Needs & Critical Support'] },
-      { area:'Vibrant Neighborhoods', key:'neigh',  items:['Neighborhood Revitalization','Environmental Protection','Transportation Access','Civic Engagement'] },
-      { area:'Grow Our Region',       key:'region', items:['Workforce Development','Science & Technology','Research & Innovation','Attracting Investment'] }
+      { area:'People to Prosperity',  key:'pros',   color:'var(--forest)',   items:['Arts & Culture','Public Education','Youth Development','Economic Mobility','Health & Human Services','Basic Needs & Critical Support'] },
+      { area:'Vibrant Neighborhoods', key:'neigh',  color:'var(--ember)',  items:['Neighborhood Revitalization','Environmental Protection','Transportation Access','Civic Engagement'] },
+      { area:'Grow Our Region',       key:'region', color:'var(--aqua)', items:['Workforce Development','Science & Technology','Research & Innovation','Attracting Investment'] }
     ];
-    var itagCss = '#tuInterests.itag-row{gap:9px;}'
-      + '#tuInterests .itag{--c:var(--p-pros);--t:rgba(238,115,49,.12);font-family:var(--f-ui);font-size:14px;font-weight:500;letter-spacing:0;text-transform:none;line-height:1.2;color:var(--ink);background:var(--paper);border:1.5px solid var(--c);border-right-width:9px;border-radius:999px;padding:9px 14px 9px 15px;display:inline-flex;align-items:center;gap:7px;}'
-      + '#tuInterests .itag-neigh{--c:var(--p-neigh);--t:rgba(192,98,154,.13);}'
-      + '#tuInterests .itag-region{--c:var(--p-region);--t:rgba(26,141,169,.12);}'
-      + '@media (hover:hover){#tuInterests .itag:hover{background:var(--t);border-color:var(--c);color:var(--ink);}}'
-      + '#tuInterests .itag.sel{background:var(--t);border-color:var(--c);color:var(--forest);font-weight:600;}'
-      + '#tuInterests .itag.sel::before{content:"";width:10px;height:5px;border-left:2px solid var(--c);border-bottom:2px solid var(--c);transform:translateY(-2px) rotate(-45deg);flex-shrink:0;}'
+    /* Same chip type as the site (mono, all caps). Unselected: a subtle outline in the pillar color.
+       Selected: filled with the pillar color, white text. Colors are the landing page's own. */
+    var itagCss = '#tuInterests.itag-row{gap:8px;}'
+      + '#tuInterests .itag{--c:var(--forest);--b:rgba(22,68,48,.38);--t:rgba(22,68,48,.06);border:1px solid var(--b);background:var(--paper);color:var(--ink-2);}'
+      + '#tuInterests .itag-neigh{--c:var(--ember);--b:rgba(238,115,49,.5);--t:rgba(238,115,49,.08);}'
+      + '#tuInterests .itag-region{--c:var(--aqua);--b:rgba(25,185,169,.55);--t:rgba(25,185,169,.08);}'
+      + '@media (hover:hover){#tuInterests .itag:hover{background:var(--t);border-color:var(--c);color:var(--forest);}}'
+      + '#tuInterests .itag.sel,#tuInterests .itag.sel:hover{background:var(--c);border-color:var(--c);color:#fff;}'
       + '#tuInterests .itag:focus-visible{outline:2px solid var(--forest);outline-offset:2px;}'
       + '.itag-key{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:14px;font-family:var(--f-ui);font-size:12px;color:var(--ink-3);}'
       + '.itag-key span{display:inline-flex;align-items:center;gap:6px;}'
-      + '.itag-key i{width:8px;height:8px;border-radius:50%;display:inline-block;}'
-      + '@media (max-width:480px){#tuInterests.itag-row{gap:7px;}#tuInterests .itag{font-size:13px;padding:7px 11px 7px 12px;border-right-width:7px;gap:5px;}}';
+      + '.itag-key i{width:8px;height:8px;border-radius:50%;display:inline-block;}';
     var segLabel = REG_SEGMENT === 'advisor' ? 'Advisor' : (REG_SEGMENT === 'community' ? 'Community Member' : '');
     var subLabel = SUBTYPE_LABELS[REG_SUBTYPE] || '';
     var context = segLabel ? '<span class="ipin ipin-setup" style="margin-bottom:16px;">' + segLabel + (subLabel ? ' \u00b7 ' + subLabel : '') + '</span><br/>' : '';
@@ -189,7 +189,7 @@ var POPUPS = {
           return '<button type="button" class="chip itag itag-' + g.key + '" data-area="' + g.area + '" title="' + g.area + '" aria-pressed="false" onclick="this.classList.toggle(\'sel\');this.setAttribute(\'aria-pressed\',this.classList.contains(\'sel\'))">' + x + '</button>';
         }).join(''); }).join('')
       + '</div>'
-      + '<div class="itag-key">' + interestGroups.map(function(g){ return '<span><i style="background:var(--p-' + g.key + ')"></i>' + g.area + '</span>'; }).join('') + '</div></div>'
+      + '<div class="itag-key">' + interestGroups.map(function(g){ return '<span><i style="background:' + g.color + '"></i>' + g.area + '</span>'; }).join('') + '</div></div>'
       + '<button class="btn btn-accent btn-block btn-lg" style="margin-top:20px;" onclick="submitTellUs()">Continue</button></div>';
   }},
   granteeholding:{k:'Grantee Partners',t:'Grantee Portal',h:function(){

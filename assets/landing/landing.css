@@ -418,3 +418,10 @@ body.portal-on{overflow:hidden;}
 .ps-veil .pv-line{font-family:var(--f-ledger);font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#8FB4A2;display:flex;align-items:center;gap:9px;}
 .ps-veil .pv-line .live{width:7px;height:7px;border-radius:50%;background:var(--aqua);animation:pulse 1.2s ease infinite;}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0ms!important;transition-duration:.01ms!important;}}
+
+/* Mobile + tablet header: logo left; Log in and the menu together in the top-right corner */
+@media (max-width:959px){
+  .nav .nav-links ~ .nav-cta{margin-left:auto;gap:6px;}
+  .nav .nav-burger{margin-right:-10px;}   /* line the icon up with the page margin */
+}
+@media (max-width:359px){ .nav .nav-login{padding-left:11px;padding-right:11px;} }
