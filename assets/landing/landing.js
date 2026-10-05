@@ -159,26 +159,37 @@ var POPUPS = {
       + '</div>';
   }},
   tellus:{k:'Tell us a little more',t:'Tell us a little more about you',h:function(){
-    /* Interest areas grouped by the three Impact Agenda pillars (stacks on phones, three columns when there's room) */
+    /* Interest areas — color-coded by Impact Agenda pillar. The tags lead; pillar names sit in a small key below. */
     var interestGroups = [
-      { area:'People to Prosperity',  color:'var(--p-pros)',   items:['Arts & Culture','Public Education','Youth Development','Economic Mobility','Health & Human Services','Basic Needs & Critical Support'] },
-      { area:'Vibrant Neighborhoods', color:'var(--p-neigh)',  items:['Neighborhood Revitalization','Environmental Protection','Transportation Access','Civic Engagement'] },
-      { area:'Grow Our Region',       color:'var(--p-region)', items:['Workforce Development','Science & Technology','Research & Innovation','Attracting Investment'] }
+      { area:'People to Prosperity',  key:'pros',   items:['Arts & Culture','Public Education','Youth Development','Economic Mobility','Health & Human Services','Basic Needs & Critical Support'] },
+      { area:'Vibrant Neighborhoods', key:'neigh',  items:['Neighborhood Revitalization','Environmental Protection','Transportation Access','Civic Engagement'] },
+      { area:'Grow Our Region',       key:'region', items:['Workforce Development','Science & Technology','Research & Innovation','Attracting Investment'] }
     ];
+    var itagCss = '#tuInterests.itag-row{gap:9px;}'
+      + '#tuInterests .itag{--c:var(--p-pros);--t:rgba(238,115,49,.12);font-family:var(--f-ui);font-size:14px;font-weight:500;letter-spacing:0;text-transform:none;line-height:1.2;color:var(--ink);background:var(--paper);border:1.5px solid var(--c);border-right-width:9px;border-radius:999px;padding:9px 14px 9px 15px;display:inline-flex;align-items:center;gap:7px;}'
+      + '#tuInterests .itag-neigh{--c:var(--p-neigh);--t:rgba(192,98,154,.13);}'
+      + '#tuInterests .itag-region{--c:var(--p-region);--t:rgba(26,141,169,.12);}'
+      + '@media (hover:hover){#tuInterests .itag:hover{background:var(--t);border-color:var(--c);color:var(--ink);}}'
+      + '#tuInterests .itag.sel{background:var(--t);border-color:var(--c);color:var(--forest);font-weight:600;}'
+      + '#tuInterests .itag.sel::before{content:"";width:10px;height:5px;border-left:2px solid var(--c);border-bottom:2px solid var(--c);transform:translateY(-2px) rotate(-45deg);flex-shrink:0;}'
+      + '#tuInterests .itag:focus-visible{outline:2px solid var(--forest);outline-offset:2px;}'
+      + '.itag-key{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:14px;font-family:var(--f-ui);font-size:12px;color:var(--ink-3);}'
+      + '.itag-key span{display:inline-flex;align-items:center;gap:6px;}'
+      + '.itag-key i{width:8px;height:8px;border-radius:50%;display:inline-block;}'
+      + '@media (max-width:480px){#tuInterests.itag-row{gap:7px;}#tuInterests .itag{font-size:13px;padding:7px 11px 7px 12px;border-right-width:7px;gap:5px;}}';
     var segLabel = REG_SEGMENT === 'advisor' ? 'Advisor' : (REG_SEGMENT === 'community' ? 'Community Member' : '');
     var subLabel = SUBTYPE_LABELS[REG_SUBTYPE] || '';
     var context = segLabel ? '<span class="ipin ipin-setup" style="margin-bottom:16px;">' + segLabel + (subLabel ? ' \u00b7 ' + subLabel : '') + '</span><br/>' : '';
     return '<div class="pop-pad">' + context + '<p class="lede">One quick step and we\u2019ll start tailoring things to you \u2014 relevant updates, the right funds, the right people.</p>'
       + '<div class="j-two" style="margin-top:16px;">' + regField('tuName','Your name','Jamie Sullivan') + regField('tuEmail','Email','jamie@cleveland.com','email') + '</div>'
       + '<div style="margin-top:20px;"><label style="display:block;font-family:var(--f-ledger);font-size:10px;font-weight:600;color:var(--forest);margin-bottom:9px;text-transform:uppercase;letter-spacing:.12em;">Interest areas \u00b7 pick as many as you like</label>'
-      + '<div id="tuInterests" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">'
-      + interestGroups.map(function(g){
-          return '<div role="group" aria-label="' + g.area + '" style="background:var(--paper);border:1px solid var(--line);border-top:3px solid ' + g.color + ';border-radius:14px;padding:12px 12px 14px;">'
-            + '<div style="display:flex;align-items:center;gap:8px;font-family:var(--f-display);font-weight:700;font-size:15px;color:var(--forest);letter-spacing:-.01em;margin-bottom:10px;">'
-            + '<span style="width:8px;height:8px;border-radius:2px;background:' + g.color + ';flex-shrink:0;"></span>' + g.area + '</div>'
-            + '<div class="chip-row">' + g.items.map(function(x){ return '<button class="chip" data-area="' + g.area + '" aria-pressed="false" onclick="this.classList.toggle(\'sel\');this.setAttribute(\'aria-pressed\',this.classList.contains(\'sel\'))">' + x + '</button>'; }).join('') + '</div></div>';
-        }).join('')
-      + '</div></div>'
+      + '<style>' + itagCss + '</style>'
+      + '<div class="chip-row itag-row" id="tuInterests">'
+      + interestGroups.map(function(g){ return g.items.map(function(x){
+          return '<button type="button" class="chip itag itag-' + g.key + '" data-area="' + g.area + '" title="' + g.area + '" aria-pressed="false" onclick="this.classList.toggle(\'sel\');this.setAttribute(\'aria-pressed\',this.classList.contains(\'sel\'))">' + x + '</button>';
+        }).join(''); }).join('')
+      + '</div>'
+      + '<div class="itag-key">' + interestGroups.map(function(g){ return '<span><i style="background:var(--p-' + g.key + ')"></i>' + g.area + '</span>'; }).join('') + '</div></div>'
       + '<button class="btn btn-accent btn-block btn-lg" style="margin-top:20px;" onclick="submitTellUs()">Continue</button></div>';
   }},
   granteeholding:{k:'Grantee Partners',t:'Grantee Portal',h:function(){
