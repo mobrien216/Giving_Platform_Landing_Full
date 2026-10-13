@@ -1,3 +1,9 @@
+/* ============ TYPE · design system 10-13-2026 ============
+   Paralucent (licensed, from the Ten35 font package): add these four files to assets/fonts/
+   paralucent-bold.woff2 · paralucent-bold.woff · paralucent-demibold.woff2 · paralucent-demibold.woff
+   Until they're there, headlines fall back to Poppins. */
+@font-face{font-family:'Paralucent';src:url('../fonts/paralucent-bold.woff2') format('woff2'),url('../fonts/paralucent-bold.woff') format('woff');font-weight:700 900;font-style:normal;font-display:swap;}
+@font-face{font-family:'Paralucent';src:url('../fonts/paralucent-demibold.woff2') format('woff2'),url('../fonts/paralucent-demibold.woff') format('woff');font-weight:500 600;font-style:normal;font-display:swap;}
 
 /* ============================================================
    CLEVELAND FOUNDATION — LANDING v1
@@ -16,8 +22,9 @@
   --parchment:#F6F2EA; --paper:#FFFFFF; --well:#F0EADD;
   --ink:#17241D; --ink-2:#57675E; --ink-3:#95A29A;
   --line:#E7E0D3; --line-2:#D3C9B5;
-  --f-display:'Bricolage Grotesque',Georgia,serif;
-  --f-ui:'Spline Sans',-apple-system,sans-serif;
+  --f-display:'Paralucent','Poppins',-apple-system,'Segoe UI',sans-serif;
+  --f-ui:'Source Sans 3','Source Sans Pro',-apple-system,'Segoe UI',sans-serif;
+  --f-figures:var(--f-ui);
   --f-ledger:'Spline Sans Mono','SF Mono',monospace;
   --sh-1:0 1px 2px rgba(22,68,48,.05),0 1px 1px rgba(22,68,48,.03);
   --sh-2:0 2px 6px rgba(22,68,48,.06),0 12px 28px -14px rgba(22,68,48,.16);
@@ -425,3 +432,16 @@ body.portal-on{overflow:hidden;}
   .nav .nav-burger{margin-right:-10px;}   /* line the icon up with the page margin */
 }
 @media (max-width:359px){ .nav .nav-login{padding-left:11px;padding-right:11px;} }
+
+/* Type weights · design system 10-13-2026: Paralucent Bold for heroes and big numbers (800 resolves to the Bold face);
+   Paralucent DemiBold for section and card titles */
+.sect-rail h2,.pop-head h3,.j-top h4,.panel .p-label,.pop-cell .pc-title,.n-card .n-title,.g-title,
+.sg-head .sg-n,.j-opt .jo-t,.j-move .jm-t,.ff-row .ffr-name,.c-cell .cc-line{font-weight:600;}
+
+/* Phones: section headers wrap — title on the first line, label + arrow on the second — so nothing is cut off at the edge */
+@media (max-width:559px){
+  .sect-rail{flex-wrap:wrap;row-gap:10px;}
+  .sect-rail .sr-main{flex:1 1 100%;}
+  .sect-rail .sr-lead{display:none;}
+  .sect-rail .sr-meta{flex:1 1 0;min-width:0;justify-content:flex-start;text-align:left;}
+}
